@@ -1,0 +1,54 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin-top: 0;
+  background: #fff;
+}
+
+#canvas-container {
+  width: 1000px;
+  height: 800px;
+  border: 1px solid red;
+  flex: none;
+}
+
+#property-panel {
+  width: 240px;
+  height: 100%;
+  flex: none;
+  background: #e5e5e5;
+  padding: 10px;
+}
+
+.row {
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  text-align: left;
+}
+
+.row label {
+  width: 80px;
+  flex: none;
+}
+
+.row input {
+  width: 120px;
+  flex: none;
+}
