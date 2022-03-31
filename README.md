@@ -12,6 +12,27 @@ pixi.js 中，文本显示存在以下问题:
 
 ![演示图](./demo.png)
 
+# 原理
+如上图, 每个文本Text实际上包含3层: textWrapper > textBox > textDrawing
+真实项目中, Text.transform 直接应用在textWrapper中
+textDrawing用于调节 屏幕坐标系与pixi坐标系的 翻转
+而textBox用于校正(amend)镜像、旋转, 校正结果如上图
+
+第一步: 为每个text构造上述三层结构
+注意将textDrawing进行flipX操作
+
+第二步: 发生Transform(rotate/flip/translate)
+Transform可能发生在text.parent / text.anchor 上
+也可能是选中文本后Transform，此时绘制时，Transform将应用在textWrapper上
+
+第三步: 找到textWrapper相对于stage的全局matrix
+设textWrapper的全局matrix是 matrix0
+
+第四步: 推算校正后的全局matrix
+dempose(matrix0), 得到scaling.y, 如果 scaling.y<0，表示发生了镜像
+此时进行镜像校正
+
+
 # TODO
 
 [ ] 整理代码\
