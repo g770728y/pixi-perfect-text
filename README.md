@@ -14,6 +14,6 @@ pixi.js 中，文本显示存在以下问题:
 
 # TODO
 
-[] 整理代码
-[] 提取并暴露 amendText 工具方法、getTextSize 方法
-[] getTextSize 改用 pixijs.getBounds 实现
+[ ] 整理代码\
+[ ] 提取并暴露 amendText 工具方法、getTextSize 方法\
+[ ] getTextSize 改用 pixijs.getBounds 实现
