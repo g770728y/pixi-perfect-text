@@ -13,25 +13,38 @@ pixi.js 中，文本显示存在以下问题:
 ![演示图](./demo.png)
 
 # 原理
-如上图, 每个文本Text实际上包含3层: textWrapper > textBox > textDrawing
-真实项目中, Text.transform 直接应用在textWrapper中
-textDrawing用于调节 屏幕坐标系与pixi坐标系的 翻转
-而textBox用于校正(amend)镜像、旋转, 校正结果如上图
+如上图, 每个文本Text实际上包含3层: textWrapper > textBox > textDrawing\
+真实项目中, Text.transform 直接应用在textWrapper中\
+textDrawing用于调节 屏幕坐标系与pixi坐标系的 翻转\
+而textBox用于校正(amend)镜像、旋转, 校正结果如上图\
 
-第一步: 为每个text构造上述三层结构
-注意将textDrawing进行flipX操作
+第一步: 为每个text构造上述三层结构\
+注意将textDrawing进行flipX操作\
 
-第二步: 发生Transform(rotate/flip/translate)
-Transform可能发生在text.parent / text.anchor 上
-也可能是选中文本后Transform，此时绘制时，Transform将应用在textWrapper上
+第二步: 发生Transform(rotate/flip/translate)\
+Transform可能发生在text.parent / text.anchor 上\
+也可能是选中文本后Transform，此时绘制时，Transform将应用在textWrapper上\
 
-第三步: 找到textWrapper相对于stage的全局matrix
-设textWrapper的全局matrix是 matrix0
+第三步: 找到textWrapper相对于stage的全局matrix\
+设textWrapper的全局matrix是 matrix0\
 
-第四步: 推算校正后的全局matrix
-dempose(matrix0), 得到scaling.y, 如果 scaling.y<0，表示发生了镜像
-此时进行镜像校正
+第四步: 推算校正后的全局matrix\
+dempose(matrix0), 得到scaling.y, 如果 scaling.y<0，表示发生了镜像\
+此时进行镜像校正，再重新读取matrix1\
+decompose(matrix1) => rotation\
+若rotation>90 && rotation<=270, 则需要加上PI(角度校正)\
 
+第五步: 应用校正后的全局matrix\
+校正后的全局matrix将应用到textBox上\
+(不能修改textWrapper,也最好不要直接改textDrawing)
+应用时需要转化为局部坐标
+
+# 关于镜像
+- flipX = flipY+rotate180
+- flipY = flipX+rotate180
+- flipXY = rotate180
+所以, scaling.y<0表示某个方向发生了镜像, 不用关注水平还是竖直镜像
+只要存在scaling.y<0, 就进行镜像校正
 
 # TODO
 
